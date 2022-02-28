@@ -4,6 +4,7 @@ resource "aws_s3_bucket" "example" {
   tags = {
     Name = var.bucketname
   }
+  force_destroy = true
 }
 
 ## Make this website enabled bucket
