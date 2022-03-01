@@ -7,7 +7,7 @@ https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTConstructPolicy.ht
 
 This demo will create S3 bucket and configure it as a website to host your static website. 
 There is a code that will create and return a presigned URL. Then you can use this URL to upload a file to the website. 
-There is a HTML Form version and AJAX version. AJAX is work-in-progress. 
+There is a HTML Form version and AJAX version.  
 
 For additional information, review the code.
 
