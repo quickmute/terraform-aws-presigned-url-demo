@@ -19,10 +19,17 @@ This demo generates actual live content. You must provide your own IP address or
 2. Rename sample.auto.Xtfvars to sample.auto.tfvars (safeguard this file!)
 3. Do terraform init
 4. Do terraform plan/apply
+4. Do terraform apply again (still working on getting config.js to be picked up)
 5. Browse to the output website link
 6. Run terraform destroy
 7. Select a file
 8. Upload using form
+
+# How to secure your website
+1. Use S3 Bucket Policy to limit who can do what. In this example case we are locking it down to your own IP.
+2. Use WAF on your API GW to limit who can get to it. In this example, we are NOT limiting anyone.
+3. Use S3 Bucket CORS policy to limit what domain can interact with this bucket. We did not use this in this example.
+4. Use Cognito to authenticate users to our website and our API endpoint. We didn't do that here. 
 
 # Some common errors
 ## Invalid according to Policy: Extra input fields: content-type
@@ -36,7 +43,10 @@ This demo generates actual live content. You must provide your own IP address or
 </Error>
 ```
 ### Solution
-I don't know why this is happening. If you try to have an input field in your Form for content-type, it will throw this warning. It must be picking it up from elsewhere as duplicate. But it doesn't seem to care if it's not there, so don't.
+This is because you didn't satify your POST condition. See this doc for example:
+https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTConstructPolicy.html
+
+In this example case, we are defining the POST policy inside our Lambda.
 
 ## InvalidAccessKeyId
 ### Error

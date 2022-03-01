@@ -69,9 +69,10 @@
         var filename_type = fileInput.type
         var argument = {
             'filename' : filename,
-            'filename_type' : filename_type
+            'filename_type' : filename_type,
+            'success_action_redirect': window.location.origin + '/success.html'
         }
-        get_api_response(filename);
+        get_api_response(argument);
     }
 
     //just want the filename
@@ -119,11 +120,12 @@
         $('#main').attr('action',url);
         $('#key').val(fields['key']);
         $('#acl').val(fields['acl']);
-        //$('#Content-Type').val(fields['Content-Type']);
+        $('#Content-Type').val(fields['Content-Type']);
         $('#X-Amz-Credential').val(fields['x-amz-credential']);
         $('#X-Amz-Algorithm').val(fields['x-amz-algorithm']);
         $('#X-Amz-Date').val(fields['x-amz-date']);
         $('#Policy').val(fields['policy']);
+        $('#success_action_redirect').val(fields['success_action_redirect']);
         $('#X-Amz-Signature').val(fields['x-amz-signature']);
         $('#X-Amz-Security-Token').val(fields['x-amz-security-token']);
         //$('#success_action_redirect').val(url.concat("success.html"));

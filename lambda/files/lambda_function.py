@@ -9,7 +9,7 @@ from botocore.client import Config
 from datetime import datetime
 from datetime import datetime
 
-def presigned_url(s3_client, objectname,expiration=3600):
+def presigned_url(s3_client, objectname, success_action_redirect, expiration=3600):
     bucket_name = os.environ.get('bucket',None)
     if (bucket_name is not None):
         fullObjectName = "/".join(["temp",objectname])
@@ -26,12 +26,14 @@ def presigned_url(s3_client, objectname,expiration=3600):
         '''
         fields = {
             "acl" : "bucket-owner-full-control",
-            "Content-Type" : "text/plain"
+            "Content-Type" : "text/plain",
+            "success_action_redirect" : success_action_redirect
         }
+        ## https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTConstructPolicy.html
         conditions = [
-            {
-                "acl": "bucket-owner-full-control"
-            }
+            {"acl": "bucket-owner-full-control"},
+            {"success_action_redirect": success_action_redirect},
+            ["starts-with", "$Content-Type", "text/"],
         ]
         '''
         :param fields: Dictionary of prefilled form fields
@@ -75,7 +77,9 @@ def lambda_handler(event, context):
         
     if(argument is not None):
         print('argument=',argument)
-        result = presigned_url(s3Client, argument, expiration=60)
+        objectname = argument.get('filename')
+        success_action_redirect = argument.get('success_action_redirect')
+        result = presigned_url(s3Client, objectname, success_action_redirect, expiration=60)
         print('result=',result)
         resultInJson = json.dumps(result)
         statusCode = 200

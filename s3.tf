@@ -77,6 +77,11 @@ EOF
   filename = "${path.module}/s3/js/config.js"
 }
 
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [local_file.foo]
+  create_duration = "30s"
+}
+
 locals {
   s3_path = "${path.module}/s3"
 }
@@ -91,6 +96,6 @@ resource "aws_s3_object" "object" {
   etag     = filemd5(join("/", [local.s3_path, each.key]))
   content_type = "text/html"
   depends_on = [
-    local_file.foo
+    time_sleep.wait_30_seconds
   ]
 }
